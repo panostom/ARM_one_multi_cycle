@@ -30,3 +30,12 @@ Implement and test, in VHDL all the components of Control Unit, that are needed 
 
 
 ![image](https://github.com/panostom/ARM_one_multi_cycle/assets/158047350/4104507b-e394-445b-909b-d263fd9687f3)
+
+## Enrich one cycle design in order to support multicycle execution
+
+Make the appopriate changes in Datapath. Adding registers between stages to store/save the suited instruction that is executed. 
+
+![image](https://github.com/panostom/ARM_one_multi_cycle/assets/158047350/a4c341cc-9216-40e8-bc52-cf1890ebba9c)
+
+## Test whole system
+In order to test the behavior of the system, we write a simple program using an the FASMARM assembler. The binary file produced is saved in the ROM.
