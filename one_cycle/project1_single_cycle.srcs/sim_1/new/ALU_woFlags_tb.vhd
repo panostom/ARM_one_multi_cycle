@@ -1,0 +1,122 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use std.env.all;
+
+entity ALU_woFlags_tb is
+--  Port ( );
+constant N : positive :=32;
+end ALU_woFlags_tb;
+
+architecture Behavioral of ALU_woFlags_tb is
+component ALU_woFlags is
+    generic(N : positive :=32);
+    Port ( A : in STD_LOGIC_VECTOR (N-1 downto 0);
+           B : in STD_LOGIC_VECTOR (N-1 downto 0);
+           ALUControl : in STD_LOGIC_VECTOR (2 downto 0);
+           shamt5 : in STD_LOGIC_VECTOR (4 downto 0);
+           S : out STD_LOGIC_VECTOR (N-1 downto 0);
+           C : out STD_LOGIC;
+           V : out STD_LOGIC);
+end component;
+
+signal A :  STD_LOGIC_VECTOR (N-1 downto 0);
+signal B :  STD_LOGIC_VECTOR (N-1 downto 0);
+signal ALUControl :  STD_LOGIC_VECTOR (2 downto 0);
+signal shamt5 :  STD_LOGIC_VECTOR (4 downto 0);
+signal S :  STD_LOGIC_VECTOR (N-1 downto 0);
+signal C :  STD_LOGIC;
+signal V :  STD_LOGIC;
+
+begin
+
+uut: ALU_woFlags port map(A,B,ALUControl,shamt5,S,C,V);
+
+test: process 
+begin
+wait for 10ns;
+
+A <= "00000000000000000000000000000000";
+B <= "00000000000000000000000000000000";
+ALUControl <= "XXX";
+wait for 10ns;
+A <= "00000000000000000000000000000001";
+B <= "00000000000000000000000000000001";
+ALUControl <= "000";
+wait for 10ns;
+A <= "00000000000000000000000000000011";
+B <= "00000000000000000000000000000001";
+ALUControl <= "000";
+wait for 10ns;
+A <= "01111111111111111111111111111111"; --overflow
+B <= "00000000000000000000000000000001";
+ALUControl <= "000";
+wait for 10ns;
+A <= "00000000000000000000000000000011";
+B <= "00000000000000000000000000000001";
+ALUControl <= "001";
+wait for 10ns;
+A <= "00000000000000000000000000000010";
+B <= "00000000000000000000000000000001";
+ALUControl <= "001";
+wait for 10ns;
+A <= "00000000000000000000000000000010";
+B <= "00000000000000000000000000000000";
+ALUControl <= "001";
+wait for 10ns;
+A <= "10000000000000000000000000000000";
+B <= "00000000000000000000000000000001";
+ALUControl <= "001";
+wait for 10ns;
+A <= "11111111111111111111111111111111";
+B <= "00000000000000000000000000000000";
+ALUControl <= "010";
+wait for 10ns;      
+A <= "11111111111111111111111111111111";    --xor
+B <= "00000000000000000000000000000000";
+ALUControl <= "011";
+wait for 10ns;
+A <= "00000000000000000000000000000001";
+B <= "00000000000000000000000000000000";
+ALUControl <= "011";
+wait for 10ns;
+A <= "00000000000000000000000000000001";    --LSL
+B <= "00000000000000000000000000000001";
+shamt5 <= "00001";
+ALUControl <= "110";
+wait for 10ns;
+A <= "00000000000000000000000000000001";    --LSL
+B <= "00000000000000000000000000000001";
+shamt5 <= "00011";
+ALUControl <= "110";
+wait for 10ns;
+A <= "00000000000000000000000000000001";    --LSL
+B <= "10000000000000000000000000000000";
+ALUControl <= "110";
+shamt5 <= "00001";
+wait for 10ns;
+A <= "00000000000000000000000000000001";    --ASR
+B <= "10000000000000000000000000000000";
+ALUControl <= "111";
+shamt5 <= "00111";
+wait for 10ns;
+A <= "00000000000000000000000000000001";    --ASR
+B <= "00000000000000000000000000000001";
+ALUControl <= "111";
+shamt5 <= "00001";
+wait for 10ns;
+A <= "00000000000000000000000000000001";    --MOV
+B <= "00000000000000000000000000000001";
+ALUControl <= "100";
+shamt5 <= "00001";
+wait for 10ns;
+A <= "00000000000000000000000000000001";    --MVN
+B <= "00000000000000000000000000000001";
+ALUControl <= "101";
+shamt5 <= "00001";
+wait for 10ns;
+
+
+stop(2);
+end process;
+
+end Behavioral;
